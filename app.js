@@ -39,6 +39,13 @@ async function newManager() {
 	);
 
 	console.log(manager);
+	const createHtml = render([manager]);
+
+	fs.writeFile("output/team.html", createHtml, function(err) {
+		if (err) {
+			console.log(err);
+		}
+	});
 }
 
 newManager();
