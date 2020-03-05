@@ -40,7 +40,7 @@ async function newManager() {
 		input.office
 	);
 	teamArray.push(manager);
-	console.log(teamArray);
+	// console.log(teamArray);
 	newTeam();
 }
 
@@ -52,18 +52,14 @@ async function newTeam() {
 			type: "list",
 			name: "selection",
 			message: "Would you like to add another employee?",
-			choices: [
-				"Add another Engineer",
-				"Add another Intern",
-				"No thank you"
-			]
+			choices: ["Add an Engineer", "Add an Intern", "No thank you"]
 		}
 	]);
 	switch (input.selection) {
-		case "Add another Engineer":
+		case "Add an Engineer":
 			newEngineer();
 			break;
-		case "Add another Intern":
+		case "Add an Intern":
 			newIntern();
 		default:
 			fs.writeFile("output/team.html", render(teamArray), function(err) {
@@ -104,7 +100,7 @@ async function newEngineer() {
 		input.github
 	);
 	teamArray.push(engineer);
-	console.log(teamArray);
+	// console.log(teamArray);
 	newTeam();
 }
 
@@ -133,6 +129,6 @@ async function newIntern() {
 	]);
 	const intern = new Intern(input.name, input.id, input.email, input.school);
 	teamArray.push(intern);
-	console.log(teamArray);
+	// console.log(teamArray);
 	newTeam();
 }
