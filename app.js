@@ -66,8 +66,6 @@ function newTeam() {
 			}
 		])
 		.then((input) => {
-			const createHtml = render([teamArray]);
-
 			switch (input.selection) {
 				case "Add another Engineer":
 					newEngineer();
@@ -75,11 +73,15 @@ function newTeam() {
 				case "Add another Intern":
 					newIntern();
 				default:
-					fs.writeFile("output/team.html", createHtml, function(err) {
-						if (err) {
-							console.log(err);
+					fs.writeFile(
+						"output/team.html",
+						render(teamArray),
+						function(err) {
+							if (err) {
+								console.log(err);
+							}
 						}
-					});
+					);
 			}
 		});
 }
