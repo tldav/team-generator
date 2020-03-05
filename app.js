@@ -10,127 +10,129 @@ const render = require("./lib/htmlRenderer");
 
 const teamArray = [];
 
-function newManager() {
-	return inquirer
-		.prompt([
-			{
-				type: "input",
-				name: "name",
-				message: "What is the name of the manager for this Project?"
-			},
-			{
-				type: "input",
-				name: "id",
-				message: "What is the manager's employee ID number?"
-			},
-			{
-				type: "input",
-				name: "email",
-				message: "What is the manager's email address?"
-			},
-			{
-				type: "input",
-				name: "office",
-				message: "What is the manager's office number?"
-			}
-		])
-		.then((input) => {
-			const manager = new Manager(
-				input.name,
-				input.id,
-				input.email,
-				input.office
-			);
-
-			teamArray.push(manager);
-			console.log(teamArray);
-
-			newTeam();
-		});
+async function newManager() {
+	const input = await inquirer.prompt([
+		{
+			type: "input",
+			name: "name",
+			message: "What is the name of the manager for this Project?"
+		},
+		{
+			type: "input",
+			name: "id",
+			message: "What is the manager's employee ID number?"
+		},
+		{
+			type: "input",
+			name: "email",
+			message: "What is the manager's email address?"
+		},
+		{
+			type: "input",
+			name: "office",
+			message: "What is the manager's office number?"
+		}
+	]);
+	const manager = new Manager(
+		input.name,
+		input.id,
+		input.email,
+		input.office
+	);
+	teamArray.push(manager);
+	console.log(teamArray);
+	newTeam();
 }
 
 newManager();
 
-function newTeam() {
-	return inquirer
-		.prompt([
-			{
-				type: "list",
-				name: "selection",
-				message: "Would you like to add another employee?",
-				choices: [
-					"Add another Engineer",
-					"Add another Intern",
-					"No thank you"
-				]
-			}
-		])
-		.then((input) => {
-			switch (input.selection) {
-				case "Add another Engineer":
-					newEngineer();
-					break;
-				case "Add another Intern":
-					newIntern();
-				default:
-					fs.writeFile(
-						"output/team.html",
-						render(teamArray),
-						function(err) {
-							if (err) {
-								console.log(err);
-							}
-						}
-					);
-			}
-		});
+async function newTeam() {
+	const input = await inquirer.prompt([
+		{
+			type: "list",
+			name: "selection",
+			message: "Would you like to add another employee?",
+			choices: [
+				"Add another Engineer",
+				"Add another Intern",
+				"No thank you"
+			]
+		}
+	]);
+	switch (input.selection) {
+		case "Add another Engineer":
+			newEngineer();
+			break;
+		case "Add another Intern":
+			newIntern();
+		default:
+			fs.writeFile("output/team.html", render(teamArray), function(err) {
+				if (err) {
+					console.log(err);
+				}
+			});
+	}
 }
 
-function newEngineer() {
-	return inquirer
-		.prompt([
-			{
-				type: "input",
-				name: "name",
-				message: "What is the name of this engineer?"
-			},
-			{
-				type: "input",
-				name: "id",
-				message: "What is this engineer's employee ID number?"
-			},
-			{
-				type: "input",
-				name: "email",
-				message: "What is this engineer's email address?"
-			},
-			{
-				type: "input",
-				name: "github",
-				message: "What is this engineer's Github profile name?"
-			},
-			{
-				type: "list",
-				name: "selection",
-				message: "Would you like to add another employee?",
-				choices: [
-					"Add another Engineer",
-					"Add another Intern",
-					"No thank you"
-				]
-			}
-		])
-		.then((input) => {
-			const engineer = new Engineer(
-				input.name,
-				input.id,
-				input.email,
-				input.github
-			);
+async function newEngineer() {
+	const input = await inquirer.prompt([
+		{
+			type: "input",
+			name: "name",
+			message: "What is the name of this engineer?"
+		},
+		{
+			type: "input",
+			name: "id",
+			message: "What is this engineer's employee ID number?"
+		},
+		{
+			type: "input",
+			name: "email",
+			message: "What is this engineer's email address?"
+		},
+		{
+			type: "input",
+			name: "github",
+			message: "What is this engineer's Github profile name?"
+		}
+	]);
+	const engineer = new Engineer(
+		input.name,
+		input.id,
+		input.email,
+		input.github
+	);
+	teamArray.push(engineer);
+	console.log(teamArray);
+	newTeam();
+}
 
-			teamArray.push(engineer);
-			console.log(teamArray);
-
-			newTeam();
-		});
+async function newIntern() {
+	const input = await inquirer.prompt([
+		{
+			type: "input",
+			name: "name",
+			message: "What is the name of this intern?"
+		},
+		{
+			type: "input",
+			name: "id",
+			message: "What is this intern's employee ID number?"
+		},
+		{
+			type: "input",
+			name: "email",
+			message: "What is this intern's email address?"
+		},
+		{
+			type: "input",
+			name: "school",
+			message: "What school is the intern attending?"
+		}
+	]);
+	const intern = new Intern(input.name, input.id, input.email, input.school);
+	teamArray.push(intern);
+	console.log(teamArray);
+	newTeam();
 }
