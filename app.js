@@ -1,3 +1,4 @@
+// Node and js file requirements
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -8,8 +9,10 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
+// Once team members are created in the form of objects, all of those objects will be pushed to this empty array.
 const teamArray = [];
 
+// This function uses inquirer to create CLI prompts to be completed by the manager of any given project/team.
 async function newManager() {
 	const input = await inquirer.prompt([
 		{
@@ -33,17 +36,23 @@ async function newManager() {
 			message: "What is the manager's office number?"
 		}
 	]);
+
+	// Creates a new manager using the constructor function from Manager.js. The user inputs are stored as an object.
 	const manager = new Manager(
 		input.name,
 		input.id,
 		input.email,
 		input.office
 	);
+
+	// Pushes the new manager class to the empty team array with global scope.
 	teamArray.push(manager);
-	// console.log(teamArray);
+
+	// Runs the new team function, which asks the user if they want to add other employees.
 	newTeam();
 }
 
+// Starts the application
 newManager();
 
 async function newTeam() {
@@ -55,6 +64,8 @@ async function newTeam() {
 			choices: ["Add an Engineer", "Add an Intern", "No thank you"]
 		}
 	]);
+
+	// Depending on selection, the user will be prompted to add info for a new engineer or intern. If neither are selected, the html page will be written with however many employees have been entered. Any number of employees can be chosen or the user can end after only adding a manager. This process will only end once "No thank you" is selected by the user.
 	switch (input.selection) {
 		case "Add an Engineer":
 			newEngineer();
@@ -70,6 +81,7 @@ async function newTeam() {
 	}
 }
 
+// runs if the user chooses to add a new engineer. This function works identically to the new manager function
 async function newEngineer() {
 	const input = await inquirer.prompt([
 		{
@@ -100,10 +112,10 @@ async function newEngineer() {
 		input.github
 	);
 	teamArray.push(engineer);
-	// console.log(teamArray);
 	newTeam();
 }
 
+// Runs if the user chooses to add a new intern. This function works identically to the new manager and new engineer functions.
 async function newIntern() {
 	const input = await inquirer.prompt([
 		{
@@ -129,6 +141,5 @@ async function newIntern() {
 	]);
 	const intern = new Intern(input.name, input.id, input.email, input.school);
 	teamArray.push(intern);
-	// console.log(teamArray);
 	newTeam();
 }
